@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sii_music/components/NavMenu.dart';
 
 class SiiRoute extends StatefulWidget{
   const SiiRoute({Key? key});
@@ -17,7 +18,7 @@ class _SiiRouteState extends State<SiiRoute> {
     // TODO: implement build
     return Row(
       children: [
-        Text('Hello')
+        NavMenu()
       ],
     );
   }
