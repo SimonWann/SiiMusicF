@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sii_music/Page/RightContainer.dart';
 import 'package:sii_music/Route.dart';
+import 'package:sii_music/Page/Home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +13,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return const MaterialApp(
       title: "SiiMusic",
-      home: const Scaffold(
-        body: SiiRoute(),
+      home: Scaffold(
+        body: SiiRoute(
+
+        ),
       )
     );
   }

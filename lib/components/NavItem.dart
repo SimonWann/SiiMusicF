@@ -11,22 +11,43 @@ class NavItem extends StatefulWidget{
   _NavItemState createState() => _NavItemState();
 }
 
-class _NavItemState extends State<NavItem>{
-  int gray = 0xffd2d2d2;
+class _NavItemState extends State<NavItem> with SingleTickerProviderStateMixin{
+  int gray = 0xffb2b2b2;
   int white = 0xffffffff;
-  Color _fontColor = Color(0xffd2d2d2);
-  Color _iconColor = Color(0xffd2d2d2);
+  Color _fontColor = Color(0xffb2b2b2);
+  Color _iconColor = Color(0xffb2b2b2);
   Color _bg = const Color(0xffffffff);
+  late Animation<double> animation;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    animation = Tween(begin: 1.0, end: 0.95).animate(controller)
+      ..addListener(() {
+        setState(() => {});
+      });
+    print(animation.value);
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return InkWell(
+          onTapDown: (e) {
+            controller.forward();
+          },
+          onTapUp: (e) {
+            controller.reverse();
+          },
           onTap: () {
-
             if(widget.onTap != null) {
-              print('Hello');
-              widget.onTap!(widget.key);
+              widget.onTap!(widget.label);
             }
           },
           onHover: (bool v) {
@@ -45,27 +66,31 @@ class _NavItemState extends State<NavItem>{
             curve: Curves.easeIn,
             child: Container(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 10,
+                    vertical: 7,
                     horizontal: 16
                 ),
-                child: Row(
-                  children: [
-                    Icon(
+                child: Transform.scale(
+                  scale: animation.value,
+                  origin: const Offset(0, 0),
+                  child: Row(
+                    children: [
+                      Icon(
                         widget.icon,
-                        color: _iconColor,
-                        size: 30.0,
-                    ),
-                    Container(
-                      width: 12.0,
-                    ),
-                    Text(widget.label,
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                        color: _fontColor
-                      )
-                    ),
-                  ],
+                        color: widget.active ? Color(white) :Color(gray),
+                        size: 28.0,
+                      ),
+                      Container(
+                        width: 12.0,
+                      ),
+                      Text(widget.label,
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w700,
+                              color: widget.active ? Color(white) : _fontColor
+                          )
+                      ),
+                    ],
+                  ),
                 )
             )
           )
