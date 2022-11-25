@@ -76,12 +76,26 @@ class _SiiRouteState extends State<SiiRoute> with SingleTickerProviderStateMixin
 
             decoration: const BoxDecoration(
               color: Color(0xff212121),
+
             ),
             height: MediaQuery.of(context).size.width,
-            child: Transform.translate(
-              offset: Offset(animation.value * 100, animation.value * 400),
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 250),
+              reverseDuration: Duration(milliseconds: 100),
+              transitionBuilder: (child, animation) {
+                var tween = Tween<Offset>(begin: Offset(0.1, 0), end: Offset(0, 0));
+                return FadeTransition(opacity: animation, child: SlideTransition(position: tween.animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.fastOutSlowIn
+                )) , child: child),) ;
+              },
               child: routeStack.isNotEmpty ? routeStack[routeStack.length - 1] : Container(),
             )
+
+            // Transform.translate(
+            //   offset: Offset(animation.value * 100, animation.value * 400),
+            //   child: routeStack.isNotEmpty ? routeStack[routeStack.length - 1] : Container(),
+            // )
           )
         )
 
